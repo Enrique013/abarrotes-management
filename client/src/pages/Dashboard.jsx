@@ -9,6 +9,7 @@ import NuevoRepartidorModal from '../components/NuevoRepartidorModal'
 import NuevoProductoModal from '../components/NuevoProductoModal'
 import QRModal from '../components/QRModal'
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal'
+import AsignarRepartidorModal from '../components/AsignarRepartidorModal'
 
 function Dashboard() {
   const [activeTab, setActiveTab] = useState('repartidores')
@@ -179,6 +180,7 @@ function Dashboard() {
           ) : activeTab === 'tiendas' ? (
             <TiendasTab
               tiendas={tiendas}
+              repartidores={repartidores}
               isLoading={isLoadingTiendas}
               error={errorTiendas}
               onReload={fetchTiendas}
@@ -399,9 +401,10 @@ function RepartidoresTab({ repartidores, isLoading, error, onReload }) {
   )
 }
 
-function TiendasTab({ tiendas, isLoading, error, onReload }) {
+function TiendasTab({ tiendas, repartidores, isLoading, error, onReload }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isQRModalOpen, setIsQRModalOpen] = useState(false)
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false)
   const [selectedTienda, setSelectedTienda] = useState(null)
 
   const handleSuccess = () => {
@@ -413,6 +416,17 @@ function TiendasTab({ tiendas, isLoading, error, onReload }) {
   const handleShowQR = (tienda) => {
     setSelectedTienda(tienda)
     setIsQRModalOpen(true)
+  }
+
+  const handleAssign = (tienda) => {
+    setSelectedTienda(tienda)
+    setIsAssignModalOpen(true)
+  }
+
+  const handleAssignSuccess = () => {
+    if (onReload) {
+      onReload()
+    }
   }
 
   return (
@@ -427,6 +441,14 @@ function TiendasTab({ tiendas, isLoading, error, onReload }) {
         isOpen={isQRModalOpen}
         onClose={() => setIsQRModalOpen(false)}
         tienda={selectedTienda}
+      />
+
+      <AsignarRepartidorModal
+        isOpen={isAssignModalOpen}
+        onClose={() => setIsAssignModalOpen(false)}
+        tienda={selectedTienda}
+        repartidores={repartidores}
+        onSuccess={handleAssignSuccess}
       />
 
       <div className="flex items-center justify-between mb-6">
@@ -515,25 +537,46 @@ function TiendasTab({ tiendas, isLoading, error, onReload }) {
                   {tienda._count.orders} pedidos
                 </span>
               </div>
-              <button
-                onClick={() => handleShowQR(tienda)}
-                className="w-full py-2 px-4 bg-blue-50 text-blue-600 hover:bg-blue-100 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleShowQR(tienda)}
+                  className="flex-1 py-2 px-4 bg-blue-50 text-blue-600 hover:bg-blue-100 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
-                  />
-                </svg>
-                Ver código QR
-              </button>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                    />
+                  </svg>
+                  <span className="hidden sm:inline">QR</span>
+                </button>
+                <button
+                  onClick={() => handleAssign(tienda)}
+                  className="flex-1 py-2 px-4 bg-green-50 text-green-600 hover:bg-green-100 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                    />
+                  </svg>
+                  <span className="hidden sm:inline">Asignar</span>
+                </button>
+              </div>
             </div>
           ))}
         </div>

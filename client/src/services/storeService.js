@@ -72,5 +72,41 @@ export const storeService = {
       }
       throw error
     }
+  },
+
+  assignStore: async (storeId, userId) => {
+    try {
+      const token = tokenStorage.getToken()
+
+      if (!token) {
+        throw new Error('No hay token de autenticación')
+      }
+
+      const response = await fetch(`${API_URL}/stores/${storeId}/assign`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userId }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Error al asignar tienda')
+      }
+
+      if (!data.success) {
+        throw new Error(data.message || 'Error al asignar tienda')
+      }
+
+      return data
+    } catch (error) {
+      if (error.message === 'Failed to fetch') {
+        throw new Error('No se pudo conectar con el servidor')
+      }
+      throw error
+    }
   }
 }
