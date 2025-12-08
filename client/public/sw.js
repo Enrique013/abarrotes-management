@@ -84,7 +84,7 @@ async function cacheFirst(request) {
 
   try {
     const response = await fetch(request);
-    if (response.ok) {
+    if (response.ok && request.method === 'GET') {
       console.log('[SW] Cacheando nuevo recurso:', request.url);
       cache.put(request, response.clone());
     }
@@ -106,9 +106,9 @@ async function networkFirst(request) {
 
   try {
     const response = await fetch(request);
-    if (response.ok) {
+    if (response.ok && request.method === 'GET') {
       console.log('[SW] Respuesta de red:', request.url);
-      // Guardar en cache runtime solo si es exitoso
+      // Guardar en cache runtime solo si es exitoso y es GET
       cache.put(request, response.clone());
     }
     return response;

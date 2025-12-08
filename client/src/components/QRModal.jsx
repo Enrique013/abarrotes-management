@@ -3,7 +3,7 @@ import { QRCodeCanvas } from 'qrcode.react'
 
 function QRModal({ isOpen, onClose, tienda }) {
   const qrRef = useRef(null)
-  const qrUrl = tienda ? `http://localhost:8081/api/stores/qr/${tienda.qrCode}` : ''
+  const qrUrl = tienda ? `https://abarrotes-management-production.up.railway.app/api/stores/qr/${tienda.qrCode}` : ''
 
   const handleDownload = () => {
     if (qrRef.current) {
