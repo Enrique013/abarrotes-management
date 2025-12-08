@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './components/Login'
 import Dashboard from './pages/Dashboard'
 import RepartidorDashboard from './pages/RepartidorDashboard'
+import QRStoreView from './pages/QRStoreView'
 import NetworkIndicator from './components/NetworkIndicator'
 import SyncStatus from './components/SyncStatus'
 import { tokenStorage } from './utils/tokenStorage'
@@ -74,6 +75,7 @@ function App() {
 
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/qr/:qrCode" element={<QRStoreView />} />
         <Route
           path="/dashboard"
           element={
