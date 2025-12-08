@@ -22,9 +22,9 @@ export const createSyncLog = async (userId: string, data: CreateSyncLogInput) =>
             userId,
             entityType: data.entityType,
             entityId: data.entityId,
-            offlineId: data.offlineId,
             action: data.action,
-            deviceInfo: data.deviceInfo
+            status: data.status || 'success',
+            details: data.details || null
         },
         include: {
             user: {

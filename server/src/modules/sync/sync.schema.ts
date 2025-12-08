@@ -4,34 +4,30 @@ import { z } from 'zod';
  * Schema para crear un log de sincronización
  */
 export const createSyncLogSchema = z.object({
-    entityType: z.enum(['VISIT', 'ORDER', 'PHOTO'], {
-        errorMap: () => ({ message: 'entityType debe ser VISIT, ORDER o PHOTO' })
-    }),
-    entityId: z.string().cuid('entityId debe ser un ID válido'),
-    offlineId: z.string().cuid('offlineId debe ser un ID válido').optional(),
-    action: z.enum(['CREATE', 'UPDATE'], {
-        errorMap: () => ({ message: 'action debe ser CREATE o UPDATE' })
-    }),
-    deviceInfo: z.string().max(500, 'deviceInfo no puede exceder 500 caracteres').optional()
+    entityType: z.enum(['VISIT', 'ORDER', 'PHOTO']),
+    entityId: z.string().cuid(),
+    action: z.enum(['CREATE', 'UPDATE']),
+    status: z.enum(['success', 'failed', 'conflict_resolved']).optional(),
+    details: z.any().optional()
 });
 
 /**
  * Schema para query params de búsqueda de logs
  */
 export const getSyncLogsQuerySchema = z.object({
-    userId: z.string().cuid('userId debe ser un ID válido').optional(),
+    userId: z.string().cuid().optional(),
     entityType: z.enum(['VISIT', 'ORDER', 'PHOTO']).optional(),
-    startDate: z.string().datetime('startDate debe ser una fecha válida').optional(),
-    endDate: z.string().datetime('endDate debe ser una fecha válida').optional()
+    startDate: z.string().datetime().optional(),
+    endDate: z.string().datetime().optional()
 });
 
 /**
  * Schema para query params de estadísticas
  */
 export const getSyncStatisticsQuerySchema = z.object({
-    userId: z.string().cuid('userId debe ser un ID válido').optional(),
-    startDate: z.string().datetime('startDate debe ser una fecha válida').optional(),
-    endDate: z.string().datetime('endDate debe ser una fecha válida').optional()
+    userId: z.string().cuid().optional(),
+    startDate: z.string().datetime().optional(),
+    endDate: z.string().datetime().optional()
 });
 
 export type CreateSyncLogInput = z.infer<typeof createSyncLogSchema>;

@@ -234,7 +234,7 @@ export const deleteProductController = async (req: Request, res: Response): Prom
     }
 };
 
-export const getActiveProductsController = async (req: Request, res: Response): Promise<void> => {
+export const getActiveProductsController = async (_req: Request, res: Response): Promise<void> => {
     try {
         const products = await getActiveProducts();
 

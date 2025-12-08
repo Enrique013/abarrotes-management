@@ -24,9 +24,7 @@ export const createOrderSchema = z.object({
 });
 
 export const updateOrderStatusSchema = z.object({
-    status: z.enum(['PENDING', 'SYNCED', 'PROCESSING', 'COMPLETED', 'CANCELLED'], {
-        errorMap: () => ({ message: 'Invalid status' })
-    })
+    status: z.enum(['PENDING', 'SYNCED', 'PROCESSING', 'COMPLETED', 'CANCELLED'])
 });
 
 export const syncOrderSchema = createOrderSchema.extend({
