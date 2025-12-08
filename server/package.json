@@ -5,12 +5,16 @@
   "license": "ISC",
   "author": "Jorge Isaac",
   "type": "module",
-  "main": "index.js",
+  "main": "dist/server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx --env-file=.env src/server.ts",
     "build": "tsc",
-    "start": "node --env-file=.env dist/server.js"
+    "start": "node dist/server.js",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.1.0",
