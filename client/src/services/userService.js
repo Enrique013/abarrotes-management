@@ -1,6 +1,6 @@
 import { tokenStorage } from '../utils/tokenStorage'
 
-const API_URL = 'http://localhost:8081/api'
+const API_URL = 'https://abarrotes-management-production.up.railway.app/api'
 
 export const userService = {
   getUsers: async () => {

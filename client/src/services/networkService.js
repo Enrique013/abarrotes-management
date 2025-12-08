@@ -46,7 +46,7 @@ class NetworkService {
   }
 
   // Verificar conectividad haciendo una petición al servidor
-  async checkConnectivity(apiUrl = 'http://localhost:8081/api') {
+  async checkConnectivity(apiUrl = 'https://abarrotes-management-production.up.railway.app/api') {
     try {
       const controller = new AbortController()
       const timeout = setTimeout(() => controller.abort(), 5000)

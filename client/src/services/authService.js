@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8081/api/auth'
+const API_URL = 'https://abarrotes-management-production.up.railway.app/api/auth'
 
 export const authService = {
   login: async (email, password) => {

@@ -3,7 +3,7 @@ import offlineDB from './offlineDB'
 import networkService from './networkService'
 import { v4 as uuidv4 } from 'uuid'
 
-const API_URL = 'http://localhost:8081/api'
+const API_URL = 'https://abarrotes-management-production.up.railway.app/api'
 
 export const visitService = {
   // Registrar nueva visita (con soporte offline)
