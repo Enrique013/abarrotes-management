@@ -67,7 +67,15 @@ function Login() {
         tokenStorage.setToken(response.data.token)
         tokenStorage.setUser(response.data.user)
 
-        navigate('/dashboard')
+        // Redirigir según el rol del usuario
+        if (response.data.user.role === 'ADMIN') {
+          navigate('/dashboard')
+        } else if (response.data.user.role === 'REPARTIDOR') {
+          navigate('/repartidor')
+        } else {
+          // Rol no reconocido, ir a dashboard por defecto
+          navigate('/dashboard')
+        }
       }
     } catch (error) {
       setServerError(error.message)

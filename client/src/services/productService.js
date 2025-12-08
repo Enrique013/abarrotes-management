@@ -17,6 +17,42 @@ const sanitizeSearchQuery = (query) => {
 }
 
 export const productService = {
+  // Obtener productos activos (para catálogo de pedidos)
+  getActiveProducts: async () => {
+    try {
+      const token = tokenStorage.getToken()
+
+      if (!token) {
+        throw new Error('No hay token de autenticación')
+      }
+
+      const response = await fetch(`${API_URL}/products/active`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Error al obtener productos activos')
+      }
+
+      if (!data.success) {
+        throw new Error(data.message || 'Error al obtener productos activos')
+      }
+
+      return data
+    } catch (error) {
+      if (error.message === 'Failed to fetch') {
+        throw new Error('No se pudo conectar con el servidor')
+      }
+      throw error
+    }
+  },
+
   getProducts: async (searchQuery = '') => {
     try {
       const token = tokenStorage.getToken()
@@ -86,6 +122,41 @@ export const productService = {
 
       if (!data.success) {
         throw new Error(data.message || 'Error al crear producto')
+      }
+
+      return data
+    } catch (error) {
+      if (error.message === 'Failed to fetch') {
+        throw new Error('No se pudo conectar con el servidor')
+      }
+      throw error
+    }
+  },
+
+  deleteProduct: async (productId) => {
+    try {
+      const token = tokenStorage.getToken()
+
+      if (!token) {
+        throw new Error('No hay token de autenticación')
+      }
+
+      const response = await fetch(`${API_URL}/products/${productId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Error al eliminar producto')
+      }
+
+      if (!data.success) {
+        throw new Error(data.message || 'Error al eliminar producto')
       }
 
       return data

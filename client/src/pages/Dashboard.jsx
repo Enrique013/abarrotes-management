@@ -617,12 +617,41 @@ function TiendasTab({ tiendas, repartidores, isLoading, error, onReload }) {
 
 function ProductosTab({ productos, isLoading, error, onReload }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [selectedProducto, setSelectedProducto] = useState(null)
+  const [deleteError, setDeleteError] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
 
   const handleSuccess = () => {
     if (onReload) {
       onReload(searchQuery)
     }
+  }
+
+  const handleDeleteClick = (producto) => {
+    setSelectedProducto(producto)
+    setDeleteError('')
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleDeleteConfirm = async () => {
+    if (selectedProducto) {
+      try {
+        setDeleteError('')
+        await productService.deleteProduct(selectedProducto.id)
+        setIsDeleteModalOpen(false)
+        if (onReload) {
+          onReload(searchQuery)
+        }
+      } catch (error) {
+        setDeleteError(error.message || 'Error al eliminar el producto')
+      }
+    }
+  }
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false)
+    setDeleteError('')
   }
 
   // Debouncing para la búsqueda
@@ -650,6 +679,16 @@ function ProductosTab({ productos, isLoading, error, onReload }) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={handleSuccess}
+      />
+
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDeleteConfirm}
+        title="¿Eliminar producto?"
+        message="Esta acción eliminará el producto permanentemente o lo desactivará si tiene órdenes asociadas."
+        itemName={selectedProducto?.name}
+        error={deleteError}
       />
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
@@ -787,7 +826,7 @@ function ProductosTab({ productos, isLoading, error, onReload }) {
                   {producto.description}
                 </p>
 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-3">
                   <span className="text-lg font-bold text-gray-900">
                     ${parseFloat(producto.price).toFixed(2)}
                   </span>
@@ -795,6 +834,28 @@ function ProductosTab({ productos, isLoading, error, onReload }) {
                     {producto._count.orderItems} pedidos
                   </span>
                 </div>
+
+                {/* Botón de eliminar */}
+                <button
+                  onClick={() => handleDeleteClick(producto)}
+                  className="w-full py-2 px-4 bg-red-50 text-red-600 hover:bg-red-100 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                  title="Eliminar producto"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                  <span className="text-sm">Eliminar</span>
+                </button>
               </div>
             </div>
           ))}

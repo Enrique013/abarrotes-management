@@ -16,23 +16,23 @@ export const authenticate = async (
 ): Promise<void> => {
     try {
         const authHeader = req.headers.authorization;
+        const tokenFromQuery = req.query.token as string | undefined;
 
-        if (!authHeader) {
-            res.status(401).json({
-                success: false,
-                message: 'No authorization token provided'
-            });
-            return;
+        // Intentar obtener el token del header o del query param
+        let token: string | null = null;
+
+        if (authHeader) {
+            token = authHeader.startsWith('Bearer ')
+                ? authHeader.substring(7)
+                : authHeader;
+        } else if (tokenFromQuery) {
+            token = tokenFromQuery;
         }
-
-        const token = authHeader.startsWith('Bearer ')
-            ? authHeader.substring(7)
-            : authHeader;
 
         if (!token) {
             res.status(401).json({
                 success: false,
-                message: 'Invalid authorization format'
+                message: 'No authorization token provided'
             });
             return;
         }
