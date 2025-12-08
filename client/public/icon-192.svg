@@ -1,0 +1,6 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" rx="32" fill="#3b82f6"/>
+  <path d="M96 48C76.118 48 60 64.118 60 84v8H48v48c0 8.837 7.163 16 16 16h64c8.837 0 16-7.163 16-16V92h-12v-8c0-19.882-16.118-36-36-36zm0 16c11.046 0 20 8.954 20 20v8H76v-8c0-11.046 8.954-20 20-20z" fill="white"/>
+  <circle cx="96" cy="116" r="8" fill="white"/>
+  <text x="96" y="175" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">ABARROTES</text>
+</svg>

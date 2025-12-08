@@ -1,0 +1,6 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="85" fill="#3b82f6"/>
+  <path d="M256 128c-53.02 0-96 42.98-96 96v21.33H128v128c0 23.564 19.103 42.667 42.667 42.667h170.666c23.564 0 42.667-19.103 42.667-42.667v-128h-32V224c0-53.02-42.98-96-96-96zm0 42.667c29.455 0 53.333 23.878 53.333 53.333v21.33h-106.666V224c0-29.455 23.878-53.333 53.333-53.333z" fill="white"/>
+  <circle cx="256" cy="309.333" r="21.333" fill="white"/>
+  <text x="256" y="465" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="white" text-anchor="middle">ABARROTES</text>
+</svg>
